@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+    <head>
+        <title></title>
+
+        <link rel="stylesheet" href="css/map.css">
+        <script src ="js/vendor/jquery.js"></script>
+        <script src = "js/vendor/underscore.js" type="text/javascript"></script>
+        <script src = "js/vendor/backbone.js" type= "text/javascript"></script>
+        <script src = "js/vendor/handlebars.js" type="text/javascript"></script>
+        <!--<script src="js/main.js" type = "text/javascript"></script>-->
+        <script src = "js/app.js" type="text/javascript"></script>
+        
+        <script type = "text/template" id = "map-template">
+        	<div id = "mapInfo">
+				
+			</div>
+	        <div id = "map">
+	        	<div id = "leftCol">
+		        	<div id = "northWest" class = "mapRegion" data-id = "0"> </div>
+		        	<div id = "southWest" class = "mapRegion" data-id = "1"> </div>
+	        	</div>
+	        	<div id = "middleCol">
+		        	<div id = "northCentral" class = "mapRegion" data-id = "2"> </div>
+		        	<div id = "southCentral" class = "mapRegion" data-id = "3"> </div>
+	        	</div>
+	        	<div id = "rightCol">
+		        	<div id = "northEast" class = "mapRegion" data-id = "4"> </div>
+		        	<div id = "southEast2" class = "mapRegion" data-id = "5"></div>
+		        	<div id = "southEast1" class = "mapRegion" data-id = "6"> </div>
+	        		
+	        	</div>
+			</div>
+        </script>
+        
+        <script type = "text/template" id = "region-template">
+        	<div class = {{className}} id = "mapInfo-inner">
+	        	<h2>{{title}}</h2>
+	        	<ul id = "countyList">
+	        	
+	        	</ul>
+        	</div>
+        </script>
+        
+        <script type = "text/template" id = "county-template">
+        	<li id = {{name}} class = "county">{{name}}</li>
+        </script>
+        
+    </head>
+    <body>
+    	<div id = "mapApp">
+	    	
+		</div>
+    </body>
+</html>
