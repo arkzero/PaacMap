@@ -174,15 +174,38 @@
 
 			render : function() {
 				var counties = this.model.get('counties');
-				$(this.el).html(this.template(this.model.toJSON()));
-
+				$(this.el).prepend(this.template(this.model.toJSON()));
+				$('.'+this.model.get('className')).addClass('new');
 				for (var i = 0; i < counties.length; i += 1) {
 					$('#countyList').append(this.countyTemplate({
 						name : counties[i].name
 					}));
 				}
-
+				this.transition()
 				return this;
+			},
+			
+			transition : function () {
+				console.log($('.new').html())
+				$('.new').animate({
+					width: '306px'
+				}, 1000, function (){
+					$(this).removeClass('new');
+					$(this).addClass('old');
+				});
+				$('.old').css('padding-left', '0px');
+				$('.old').css('padding-right', '0px');
+				$('.old').animate({
+					width: '0px'
+				}, 1000, function (){
+					$(this).remove();
+				});
+				$('.old h2').animate({
+					opacity: 0
+				}, 1000);
+				$('.old ul').animate({
+					opacity: 0
+				}, 1000)
 			}
 		});
 
