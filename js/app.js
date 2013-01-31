@@ -193,12 +193,7 @@
 					$(this).removeClass('new');
 					$(this).addClass('old');
 				});
-				$('.new h2').animate({
-				    opacity: 1
-				}, 1000);
-				$('.new ul').animate({
-				    opacity: 1
-				}, 1000);
+
 				
 				$('.old').css('padding-left', '0px');
 				$('.old').css('padding-right', '0px');
