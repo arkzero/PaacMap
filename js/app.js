@@ -1,177 +1,216 @@
 (function($) {
 
-    /////-----     MODELS     -----/////
+	/////-----     MODELS     -----/////
 
-    window.Region = Backbone.Model.extend({
-        
-        initialize : function () {
-            var image = new Image();
-            image.src = this.get('image');
-            this.set({image: image});
-        }
-        
-    });
+	window.Region = Backbone.Model.extend({
 
-    window.Controller = Backbone.Model.extend({
+		initialize : function() {
+			var image = new Image();
+			image.src = this.get('image');
+			this.set({
+				image : image
+			});
+		}
+	});
 
-        defaults : {
-            active : -1
-        },
+	window.Controller = Backbone.Model.extend({
 
-        setActive : function(act) {
-            this.set({
-                'active' : act
-            });
-        },
+		defaults : {
+			active : -1
+		},
 
-        getActive : function() {
-            return this.get('active');
-        }
-    });
+		setActive : function(act) {
+			this.set({
+				'active' : act
+			});
+		},
 
-    /////-----     COLLECTIONS     -----/////
+		getActive : function() {
+			return this.get('active');
+		}
+	});
 
-    window.Regions = Backbone.Collection.extend({
-        url : 'regions.json',
-        model : Region,
+	/////-----     COLLECTIONS     -----/////
 
-        initialize : function() {
-            this.fetch({
-                update : true
-            });
-        },
-    });
+	window.Regions = Backbone.Collection.extend({
+		url : 'regions.json',
+		model : Region,
 
-    window.regions = new Regions();
-    window.controller = new Controller;
+		initialize : function() {
+			this.fetch({
+				update : true
+			});
+		},
+	});
 
-    $(document).ready(function() {
+	window.regions = new Regions();
+	window.controller = new Controller;
 
-        /////-----     VIEW     -----/////
+	$(document).ready(function() {
 
-        window.MapView = Backbone.View.extend({
-        template : Handlebars.compile($('#map-template').html()),
+		/////-----     VIEW     -----/////
 
-        events : {
-            'click .mapRegion' : 'openCoalition',
-            'mouseover .mapRegion' : 'mouseOverRegion',
-            'mouseout .mapRegion' : 'mouseOutRegion'
-        },
-        
-        initialize : function () {
-            this.controller = this.options.controller;
-            this.collection.bind('reset', this.render, this);
-        },
+		window.MapView = Backbone.View.extend({
+			template : Handlebars.compile($('#map-template').html()),
 
-        render : function () {
-            $(this.el).html(this.template());
-            return this;
-        }, 
-        
-        openCoalition : function (event) {
-            var id = $(event.currentTarget).data('id');
+			events : {
+				'click .mapRegion' : 'openCoalition',
+				'mouseover .mapRegion' : 'regionHover',
+				'mouseout .mapRegion' : 'hoverReset'
+			},
 
-            switch (id) {
-                case 0:
-                    document.location.href = "http://paac.webizly.biz/coalition/northwest-regional-action-coalition"; 
-                    break;
-                case 1:
-                    document.location.href = "http://paac.webizly.biz/coalition/southwest-regional-action-coalition";
-                    break;
-                case 2:
-                    document.location.href = "http://paac.webizly.biz/coalition/north-central-regional-action-coalition";
-                    break;
-                case 3:
-                    document.location.href = "http://paac.webizly.biz/coalition/south-central-regional-action-coalition";
-                    break;
-                case 4:
-                    document.location.href = "http://paac.webizly.biz/coalition/northeast-regional-action-coalition";
-                    break;
-                case 5: 
-                    document.location.href = "http://paac.webizly.biz/coalition/southeast-regional-action-coalition-1";
-                    break;
-                case 6:
-                    document.location.href = "http://paac.webizly.biz/coalition/southeast-regional-action-coalition-2";
-                    break;
-            }
-        },
-        
-        mouseOverRegion : function (event) {
-            var className = $(event.currentTarget).attr('id'),
-                id = $(event.currentTarget).data('id'),
-                active = this.controller.getActive();
-            
-            $('#map').addClass(className+'Hover');
-            
-            if(active != id && active >= 0){
-                this.controller.setActive(id);
-                this.regionView = new RegionView({
-                    model: this.collection.at(id),
-                    el: $('#mapInfo'),
-                    collection: this.collection,
-                    controller : this.controller
-                });
-                this.regionView.render();
-            }else if (active < 0){
-                this.controller.setActive(id);
-                this.regionView = new RegionView({
-                    model: this.collection.at(id),
-                    el: $('#mapInfo'),
-                    collection: this.collection,
-                    controller : this.controller
-                });
-                this.regionView.render();
-            }
-        },
-        
-        mouseOutRegion : function (event) {
-            var id = $(event.currentTarget).attr('id');
-            
-            $('#map').removeClass(id+'Hover');
-        }
-    });
+			initialize : function() {
+				this.controller = this.options.controller;
+				this.collection.bind('reset', this.render, this);
+			},
 
-    window.RegionView = Backbone.View.extend({
-        template : Handlebars.compile($('#region-template').html()),
-        countyTemplate: Handlebars.compile($('#county-template').html()),
+			render : function() {
+				$(this.el).html(this.template());
+				return this;
+			},
 
-        render : function() {
-            var counties = this.model.get('counties');
-            $(this.el).html(this.template(this.model.toJSON()));
-            
-            for(var i = 0; i < counties.length; i+=1){
-                $('#countyList').append(this.countyTemplate({name: counties[i].name}));
-            }
-            
-            return this;
-        }
-    });
+			openCoalition : function(event) {
+				var id = $(event.currentTarget).data('id');
 
-    /////-----     ROUTER     -----/////
-    window.App = Backbone.Router.extend({
+				switch (id) {
+					case 0:
+						document.location.href = "http://paac.webizly.biz/coalition/northwest-regional-action-coalition";
+						break;
+					case 1:
+						document.location.href = "http://paac.webizly.biz/coalition/southwest-regional-action-coalition";
+						break;
+					case 2:
+						document.location.href = "http://paac.webizly.biz/coalition/north-central-regional-action-coalition";
+						break;
+					case 3:
+						document.location.href = "http://paac.webizly.biz/coalition/south-central-regional-action-coalition";
+						break;
+					case 4:
+						document.location.href = "http://paac.webizly.biz/coalition/northeast-regional-action-coalition";
+						break;
+					case 5:
+						document.location.href = "http://paac.webizly.biz/coalition/southeast-regional-action-coalition-1";
+						break;
+					case 6:
+						document.location.href = "http://paac.webizly.biz/coalition/southeast-regional-action-coalition-2";
+						break;
+				}
+			},
 
-        routes : {
-            '' : 'home'
-        },
+			mouseOverRegion : function(event) {
+				var className = $(event.currentTarget).attr('id'), id = $(event.currentTarget).data('id'), active = this.controller.getActive();
 
-        initialize : function() {
-            //this.controller = this.options.controller;
-        },
+				$('#map').addClass(className + 'Hover');
 
-        home : function() {
-            this.mapView = new MapView({
-                el : $('#mapApp'),
-                collection: window.regions,
-                controller : window.controller
-            });
-            //this.mapView.render();
-        }
-    });
+				if (active != id && active >= 0) {
+					this.controller.setActive(id);
+					this.regionView = new RegionView({
+						model : this.collection.at(id),
+						el : $('#mapInfo'),
+						collection : this.collection,
+						controller : this.controller
+					});
+					this.regionView.render();
+				} else if (active < 0) {
+					this.controller.setActive(id);
+					this.regionView = new RegionView({
+						model : this.collection.at(id),
+						el : $('#mapInfo'),
+						collection : this.collection,
+						controller : this.controller
+					});
+					this.regionView.render();
+				}
+			},
 
-    $(function() {
-        window.App = new App();
-        Backbone.history.start();
-    });
+			mouseOutRegion : function(event) {
+				var id = $(event.currentTarget).attr('id');
 
-});
+				$('#map').removeClass(id + 'Hover');
+			},
+
+			regionHover : function(event) {
+				var self = this, collection = this.collection, controller = this.controller, active, 
+					id = $(event.currentTarget).attr('id');
+					
+				this.counter = setTimeout(function() {
+					$('#map').addClass(id + 'Hover');
+					id = $(event.currentTarget).data('id');
+					active = controller.getActive();
+
+					if (id != active) {
+						self.openInfoPanel(id);
+					}
+				}, 500);
+			},
+
+			hoverReset : function(event) {
+				var id = $(event.currentTarget).attr('id');
+				clearTimeout(this.counter);
+			},
+			
+			openInfoPanel : function (id) {
+				var className;
+				if(this.controller.getActive() >= 0){
+					className = this.collection.at(this.controller.getActive()).get('className') + 'Hover';
+					$('#map').removeClass(className)
+				}
+				console.log(className)
+				this.controller.setActive(id);
+				this.regionView = new RegionView({
+					model : this.collection.at(id),
+					el : $('#mapInfo'),
+					collection : this.collection,
+					controller : this.controller
+				});
+				this.regionView.render();
+			}
+
+		});
+
+		window.RegionView = Backbone.View.extend({
+			template : Handlebars.compile($('#region-template').html()),
+			countyTemplate : Handlebars.compile($('#county-template').html()),
+
+			render : function() {
+				var counties = this.model.get('counties');
+				$(this.el).html(this.template(this.model.toJSON()));
+
+				for (var i = 0; i < counties.length; i += 1) {
+					$('#countyList').append(this.countyTemplate({
+						name : counties[i].name
+					}));
+				}
+
+				return this;
+			}
+		});
+
+		/////-----     ROUTER     -----/////
+		window.App = Backbone.Router.extend({
+
+			routes : {
+				'' : 'home'
+			},
+
+			initialize : function() {
+				//this.controller = this.options.controller;
+			},
+
+			home : function() {
+				this.mapView = new MapView({
+					el : $('#mapApp'),
+					collection : window.regions,
+					controller : window.controller
+				});
+				//this.mapView.render();
+			}
+		});
+
+		$(function() {
+			window.App = new App();
+			Backbone.history.start();
+		});
+
+	});
 })(jQuery);
