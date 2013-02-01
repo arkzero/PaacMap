@@ -173,11 +173,17 @@
 			countyTemplate : Handlebars.compile($('#county-template').html()),
 
 			render : function() {
-				var counties = this.model.get('counties');
+				var counties = this.model.get('counties'),
+				    $target;
 				$(this.el).prepend(this.template(this.model.toJSON()));
 				$('.'+this.model.get('className')).addClass('new');
 				for (var i = 0; i < counties.length; i += 1) {
-					$('#countyList').append(this.countyTemplate({
+				    if (i % 2 == 0){
+				        $target = $('#even');
+				    }else{
+				        $target = $('#odd');
+				    }
+					$target.append(this.countyTemplate({
 						name : counties[i].name
 					}));
 				}
@@ -192,6 +198,10 @@
 				}, 1000, function (){
 					$(this).removeClass('new');
 					$(this).addClass('old');
+					
+					$('.countyList').animate({
+					   opacity: 1
+					},500);
 				});
 
 				
