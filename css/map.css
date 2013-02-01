@@ -80,6 +80,11 @@ div#mapApp div#mapInfo div#mapInfo-inner.new{
 	background-color: #336666;
 }
 
+#mapApp #mapInfo div#mapInfo-inner.inital h3{
+	margin: 80px 0px;
+	width: 306px;
+}
+
 #mapApp #map div#leftCol{
 	position: relative;
 	float: left;
