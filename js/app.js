@@ -115,60 +115,20 @@
 				}
 			},
 
-			mouseOverRegion : function(event) {
-				var className = $(event.currentTarget).attr('id'), id = $(event.currentTarget).data('id'), active = this.controller.getActive();
-
-				$('#map').addClass(className + 'Hover');
-
-				if (active != id && active >= 0) {
-					this.controller.setActive(id);
-					this.regionView = new RegionView({
-						model : this.collection.at(id),
-						el : $('#mapInfo'),
-						collection : this.collection,
-						controller : this.controller
-					});
-					this.regionView.render();
-				} else if (active < 0) {
-					this.controller.setActive(id);
-					this.regionView = new RegionView({
-						model : this.collection.at(id),
-						el : $('#mapInfo'),
-						collection : this.collection,
-						controller : this.controller
-					});
-					this.regionView.render();
-				}
-			},
-
-			mouseOutRegion : function(event) {
-				var id = $(event.currentTarget).attr('id');
-
-				$('#map').removeClass(id + 'Hover');
-			},
-
 			regionHover : function(event) {
 				var self = this, collection = this.collection, controller = this.controller, active, 
-					id = $(event.currentTarget).attr('id'),
-					counter;
-					
-			    if (this.controller.getAnimate()){
-			        counter = 500;
-			    }else{
-			        counter = 1000;
-			    }
-					
+					id = $(event.currentTarget).attr('id');
+				console.log(this.controller.getNext())	
 				this.counter = setTimeout(function() {
-					$('#map').addClass(id + 'Hover');
+					//$('#map').addClass(id + 'Hover');
 					id = $(event.currentTarget).data('id');
 					active = controller.getActive();
-					if (id != active && self.controller.getAnimate()) {
+					if (self.controller.getAnimate() && id != active) {
 						self.openInfoPanel(id);
-					}else if (!self.controller.getAnimate() && self.controller.getNext() < 0){
+					}else if (!self.controller.getAnimate()){
 					   self.controller.setNext(id);
-					   console.log(self.controller.getNext())
 					}
-				}, counter);
+				}, 250);
 			},
 
 			hoverReset : function(event) {
@@ -178,19 +138,24 @@
 			
 			openInfoPanel : function (id) {
 				var className;
-				if(this.controller.getActive() >= 0){
-					className = this.collection.at(this.controller.getActive()).get('className') + 'Hover';
-					$('#map').removeClass(className)
+				if(this.controller.getAnimate() === true){
+					this.controller.setAnimate(false)
+					if(this.controller.getActive() >= 0){
+						className = this.collection.at(this.controller.getActive()).get('className') + 'Hover';
+						$('#map').removeClass(className)
+					}
+					className = this.collection.at(id).get('className') + 'Hover';
+					$('#map').addClass(className)
+					this.controller.setActive(id);
+					this.regionView = new RegionView({
+						model : this.collection.at(id),
+						el : $('#mapInfo'),
+						collection : this.collection,
+						controller : this.controller,
+						parent: this
+					});
+					this.regionView.render();
 				}
-				this.controller.setActive(id);
-				this.regionView = new RegionView({
-					model : this.collection.at(id),
-					el : $('#mapInfo'),
-					collection : this.collection,
-					controller : this.controller,
-					parent: this
-				});
-				this.regionView.render();
 			}
 
 		});
@@ -227,18 +192,17 @@
 			
             transition : function () {
                 var self = this;
-                this.controller.setAnimate(false);
                 $('.new').animate({
                     width : '306px'
-                }, 1000, function() {
+                }, 750, function() {
                     $(this).removeClass('new');
                     $(this).addClass('old');
 
                     $('.countyList').animate({
                         opacity : 1
-                    }, 500, function() {
-                        
+                    }, 250, function() {
                         if(self.controller.getNext() >= 0){
+                            self.controller.setAnimate(true);
                             self.parent.openInfoPanel(self.controller.getNext());
                             self.controller.setNext(-1);
                         }else{
@@ -251,15 +215,15 @@
                 $('.old').css('padding-right', '0px');
                 $('.old').animate({
                     width : '0px'
-                }, 1000, function() {
+                }, 750, function() {
                     $(this).remove();
                 });
                 $('.old h2').animate({
                     opacity : 0
-                }, 1000);
+                }, 750);
                 $('.old ul').animate({
                     opacity : 0
-                }, 1000)
+                }, 750)
             }
 
 		});
