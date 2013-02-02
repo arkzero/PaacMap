@@ -146,19 +146,6 @@
 	"image": "img/paacSoutheast1.png",
 	"className": "southEast1",
 	"counties": [{
-		"name": "Schuylkill"
-	},{
-		"name": "Berks"
-	},{
-		"name": "Montogomery"
-	},{
-		"name": "Bucks"
-	}]
-},{
-	"title": "Southeast 2 Regional Action Coalition",
-	"image": "img/paacSoutheast2.png",
-	"className": "southEast2",
-	"counties": [{
 		"name": "Lancaster"
 	},{
 		"name": "Chester"
@@ -166,5 +153,18 @@
 		"name": "Delaware"
 	},{
 		"name": "Philiadelphia"
+	}]
+},{
+	"title": "Southeast 2 Regional Action Coalition",
+	"image": "img/paacSoutheast2.png",
+	"className": "southEast2",
+	"counties": [{
+		"name": "Schuylkill"
+	},{
+		"name": "Berks"
+	},{
+		"name": "Montogomery"
+	},{
+		"name": "Bucks"
 	}]
 }]
