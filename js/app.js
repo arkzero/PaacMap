@@ -128,7 +128,7 @@
 					}else if (!self.controller.getAnimate()){
 					   self.controller.setNext(id);
 					}
-				}, 250);
+				}, 350);
 			},
 
 			hoverReset : function(event) {
@@ -139,6 +139,7 @@
 			openInfoPanel : function (id) {
 				var className;
 				if(this.controller.getAnimate() === true){
+					console.log(this.controller.getNext())
 					this.controller.setAnimate(false)
 					if(this.controller.getActive() >= 0){
 						className = this.collection.at(this.controller.getActive()).get('className') + 'Hover';
@@ -155,6 +156,9 @@
 						parent: this
 					});
 					this.regionView.render();
+					if(this.controller.getNext() >= 0){
+						this.controller.setNext(-1);
+					}
 				}
 			}
 
@@ -194,17 +198,17 @@
                 var self = this;
                 $('.new').animate({
                     width : '306px'
-                }, 750, function() {
+                }, 500, function() {
                     $(this).removeClass('new');
                     $(this).addClass('old');
 
                     $('.countyList').animate({
                         opacity : 1
-                    }, 250, function() {
+                    }, 100, function() {
                         if(self.controller.getNext() >= 0){
                             self.controller.setAnimate(true);
                             self.parent.openInfoPanel(self.controller.getNext());
-                            self.controller.setNext(-1);
+                            //self.controller.setNext(-1);
                         }else{
                             self.controller.setAnimate(true);
                         }
@@ -215,15 +219,15 @@
                 $('.old').css('padding-right', '0px');
                 $('.old').animate({
                     width : '0px'
-                }, 750, function() {
+                }, 500, function() {
                     $(this).remove();
                 });
                 $('.old h2').animate({
                     opacity : 0
-                }, 750);
+                }, 500);
                 $('.old ul').animate({
                     opacity : 0
-                }, 750)
+                }, 500)
             }
 
 		});
