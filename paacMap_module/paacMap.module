@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * Implementation of hook_block_info().
+ */
+ function paacMap_block_info() {    
+  $blocks['paacMap'] = array(
+    // info: The name of the block.
+    'info' => t('Paac Map'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implementation of hook_block_view().
+ */
+function paacMap_block_view($delta = '') {
+  // The $delta parameter tells us which block is being requested.
+  switch ($delta) {
+    case 'paacMap':
+      // Create your block content here
+      $block['subject'] = t('PAAC MAP');
+      $block['content'] = paacMap_admin_page();
+      break;
+  }
+
+  return $block;
+}
+
+function paacMap_block_configure($delta = '') {
+
+  $form = array();
+  if ($delta == 'paacMap') {
+
+    $form['paacMap'] = array(
+      '#title' => t('PAAC Map'),
+      '#size' => 60,
+    );
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_help
+ */
+function paacMap_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#paacMap':
+      return t("Interactive map for the PA Action Coalitions");
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function paacMap_permission() {
+  return array(
+    'view paacMap app' => array(
+      'title' => t('View PAAC Map App'),
+    )
+  );
+}
+
+/**
+ * Implements hook_menu()
+ */
+function paacMap_menu() {
+  $items['paacMap'] = array(
+    'title' => 'PAAC Map',
+    'description' => 'Interactive map of the PA Action Coalitions',
+    'page callback' => 'paacMap_admin_page',
+    'access arguments' => array('access content'),
+    'weight' => 0,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;   
+}
+
+/**
+ * Implements hook_theme().
+ */
+function paacMap_theme($existing, $type, $theme, $path) {
+  $path .= '/theme';
+  
+  return array(
+    'paacMap_map' => array(
+      'path' => $path,
+      'template' => 'map',
+      'variables' => array(),
+    ),
+    'paacMap_region' => array(
+      'path' => $path,
+      'template' => 'region',
+      'variables' => array(),
+    ),
+    'paacMap_county' => array(
+      'path' => $path,
+      'template' => 'county',
+      'variables' => array(),
+    )
+  );
+}
+
+/**
+ * Set up app templates, js and container div
+ */
+function paacMap_admin_page(){
+  // Add backbone.js to page.
+  drupal_add_library('backbone_services', 'drupalbackbone-services');
+  
+  drupal_set_title('');
+  $path = drupal_get_path('module', 'paacMap');
+  
+  //Add Templates to page.
+  backbone_add_template('map-template', theme('paacMap_map'));
+  backbone_add_template('region-template', theme('paacMap_region'));
+  backbone_add_template('county-template', theme('paacMap_county'));
+  
+  //Add app js
+  drupal_add_js($path .'/js/jquery.js');
+  drupal_add_js($path .'/js/handlebars.js');
+  //drupal_add_js($path .'/js/underscore.js');
+  //drupal_add_js($path .'/js/backbone.js');
+  drupal_add_js($path .'/js/app.js');
+  
+  drupal_add_js('var filePath = "'.$path.'";', 'inline');
+  
+  //Add app Css
+  drupal_add_css($path .'/map.css');
+
+  return array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => array(
+      'id' => 'mapApp',
+    ),
+  );
+}

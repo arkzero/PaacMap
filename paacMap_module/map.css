@@ -1,0 +1,185 @@
+div#mapApp{
+	width: 960px;
+	height: 343px;
+	margin: auto;
+}
+
+#mapApp div#map {
+	width: 617px;
+	background-image: url('img/paac_1.png');
+	background-size: 100% 100%;
+	height: 360px;
+}
+
+#mapApp div#mapInfo{
+	width: 350px;
+	/*background-color: #ccc;*/
+	height: 360px;
+	position: relative;
+	float: right;
+	left: 30px;
+}
+
+#mapApp #mapInfo div#mapInfo-inner{
+	padding: 18.5px;
+	width: 306px;
+	height: 323px;
+	position: relative;
+	float: right;
+}
+
+#mapApp #mapInfo div#mapInfo-inner h2{
+	width: 306px;
+	color: white
+}
+
+#mapApp #mapInfo div#mapInfo-inner ul{
+	line-height: 24px;
+}
+
+#mapApp #mapInfo div#mapInfo-inner .countyList{
+	position: relative;
+	float: left;
+	width: 150px;
+	opacity: 0;
+}
+
+div#mapApp div#mapInfo div#mapInfo-inner.new{
+	padding: 18.5px;
+	width: 0px;
+	height: 323px;
+	position: relative;
+	float: left;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.northWest{
+	background-color: #009966;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.southWest{
+	background-color: #336699;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.northCentral{
+	background-color: #6699cc;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.southCentral{
+	background-color: #cc3333;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.northEast{
+	background-color: #996699;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.southEast1{
+	background-color: #336666;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.southEast2{
+	background-color: #999999;
+}
+
+#mapApp #mapInfo div#mapInfo-inner.inital h3{
+	margin: 80px 0px;
+	width: 306px;
+}
+
+#mapApp #map div#leftCol{
+	position: relative;
+	float: left;
+	width: 232px;
+}
+
+#mapApp #map div#middleCol{
+	position: relative;
+	float: left;
+	width: 201px;
+}
+
+#mapApp #map div#rightCol{
+	position: relative;
+	float: left;
+	width: 177px;
+}
+
+#mapApp #map #leftCol div#northWest{
+	/*background-color: #090;*/
+	height: 200px;
+}
+
+#mapApp #map #leftCol div#southWest{
+	/*background-color: #24c;*/
+	height: 160px;
+}
+
+#mapApp #map #middleCol div#northCentral{
+	/*background-color: #38f;*/
+	height: 225px;
+}
+
+#mapApp #map #middleCol div#southCentral{
+	/*background-color: #c00;*/
+	height: 132px;
+}
+
+#mapApp #map #rightCol div#northEast{
+	/*background-color: #93c;*/
+	height: 213px;
+}
+
+#mapApp #map #rightCol div#southEast1{
+	/*background-color: #24c;*/
+	height: 75px;
+}
+
+#mapApp #map #rightCol div#southEast2{
+	/*background-color: #666;*/
+	height: 73px;
+}
+
+#mapApp div#map.northWestHover{
+	background-image: url('img/paacNorthwest.png');
+	cursor: pointer;
+}
+
+#mapApp div#map.southWestHover{
+	background-image: url('img/paacSouthwest.png');
+	cursor: pointer;
+}
+
+#mapApp div#map.northCentralHover{
+	background-image: url('img/paacNorthcentral.png');
+	cursor: pointer;
+}
+
+#mapApp div#map.southCentralHover{
+	background-image: url('img/paacSouthcentral.png');
+	cursor: pointer;
+}
+
+#mapApp div#map.northEastHover{
+	background-image: url('img/paacNortheast.png');
+	cursor: pointer;
+}
+
+#mapApp div#map.southEast1Hover{
+	background-image: url('img/paacSoutheast1.png');
+	cursor: pointer;
+}
+
+#mapApp div#map.southEast2Hover{
+	background-image: url('img/paacSoutheast2.png');
+	cursor: pointer;
+}
+
+#mapApp #mapInfo li{
+	font-size: 16px;
+	font-family: Georgia;
+	color: white;
+}
+
+#mapApp #mapInfo h2{
+	font-size: 18px;
+	font-family: Georgia;
+}
